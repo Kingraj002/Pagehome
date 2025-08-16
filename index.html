@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AJAY 2099</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body {
+      font-family: 'Orbitron', sans-serif;
+      overflow: hidden;
+      background: black;
+      color: #00f7ff;
+      transition: background 0.5s, color 0.5s;
+    }
+    body.day{background:#0a0a0a; color:#00ffea;}
+    #matrix{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;}
+    #particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
+
+    .container{text-align:center;position:relative;top:15%;width:100%;}
+    h1{
+      font-size:120px;
+      letter-spacing:30px;
+      color:#00f7ff;
+      text-shadow:0 0 30px #00f7ff,0 0 60px #00f7ff,0 0 90px #00f7ff;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow{
+      from{ text-shadow:0 0 30px #00f7ff,0 0 60px #00f7ff; }
+      to{ text-shadow:0 0 60px #00f7ff,0 0 120px #00f7ff; }
+    }
+
+    #quote{margin-top:20px;font-size:20px;font-style:italic;color:#fff;animation: fadeIn 2s;}
+    @keyframes fadeIn{0%{opacity:0;}100%{opacity:1;}}
+
+    .search-bar{margin-top:30px;}
+    .search-bar input{
+      width:60%;
+      padding:15px 20px;
+      border-radius:25px;
+      border:2px solid #00f7ff;
+      font-size:18px;
+      outline:none;
+      color:black;
+    }
+    .search-bar button{
+      padding:15px 25px;
+      margin-left:10px;
+      border-radius:25px;
+      border:none;
+      background:#00f7ff;
+      font-weight:bold;
+      cursor:pointer;
+      font-size:18px;
+      color:black;
+      transition:0.3s;
+    }
+    .search-bar button:hover{background:#fff;color:#00f7ff;}
+
+    .links{margin-top:40px;}
+    .links a{
+      margin:0 15px;
+      padding:12px 25px;
+      border-radius:30px;
+      background:#00f7ff;
+      color:black;
+      font-weight:bold;
+      text-decoration:none;
+      box-shadow:0 0 15px #00f7ff;
+      transition:0.3s;
+    }
+    .links a:hover{background:#fff;color:#00f7ff;box-shadow:0 0 25px #00f7ff,0 0 50px #00f7ff;}
+
+    .music-btn,.theme-btn{
+      margin-top:30px;
+      padding:12px 25px;
+      background:transparent;
+      border:2px solid #00f7ff;
+      border-radius:20px;
+      color:#00f7ff;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.3s;
+      margin-right:10px;
+    }
+    .music-btn:hover,.theme-btn:hover{background:#00f7ff;color:black;}
+
+    #clock{
+      margin-top:20px;
+      font-size:30px;
+      color:#00f7ff;
+      text-shadow:0 0 10px #00f7ff;
+      animation: fadeIn 2s;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+  <canvas id="particles"></canvas>
+
+  <div class="container">
+    <h1>A J A Y</h1>
+    <div id="clock"></div>
+    <div id="quote"></div>
+
+    <div class="search-bar">
+      <form action="https://www.google.com/search" method="GET" target="_blank">
+        <input type="text" name="q" placeholder="Search the future..." autocomplete="off">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    <div class="links">
+      <a href="https://youtube.com" target="_blank">YouTube</a>
+      <a href="https://instagram.com" target="_blank">Instagram</a>
+      <a href="https://chat.openai.com" target="_blank">ChatGPT</a>
+    </div>
+
+    <button class="music-btn" onclick="toggleMusic()">🎵 Toggle Music</button>
+    <button class="theme-btn" onclick="toggleTheme()">🌙 Day/Night</button>
+    <audio id="bg-music" loop>
+      <source src="music.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <script>
+    // Digital Clock
+    function updateClock(){
+      const now=new Date();
+      let h=now.getHours().toString().padStart(2,'0');
+      let m=now.getMinutes().toString().padStart(2,'0');
+      let s=now.getSeconds().toString().padStart(2,'0');
+      document.getElementById('clock').innerText=`${h}:${m}:${s}`;
+    }
+    setInterval(updateClock,1000);
+    updateClock();
+
+    // Dynamic Quote
+    const quotes=["🚀 The future belongs to those who create it.","⚡ Stay futuristic, stay limitless.","🌌 Welcome to 2099 — where dreams meet reality.","💎 Innovation is your superpower.","🔥 Ajay, you are the legend of your era!"];
+    document.getElementById("quote").innerText=quotes[Math.floor(Math.random()*quotes.length)];
+
+    // Music Toggle
+    const music=document.getElementById("bg-music");
+    function toggleMusic(){ music.paused?music.play():music.pause(); }
+
+    // Theme Toggle
+    function toggleTheme(){ document.body.classList.toggle('day'); }
+
+    // Matrix Effect
+    const c=document.getElementById("matrix");
+    const ctx=c.getContext("2d");
+    c.height=window.innerHeight;
+    c.width=window.innerWidth;
+    const letters="01AJAY2099";
+    const fontSize=16;
+    const columns=c.width/fontSize;
+    const drops=Array(Math.floor(columns)).fill(1);
+    function draw(){
+      ctx.fillStyle="rgba(0,0,0,0.05)";
+      ctx.fillRect(0,0,c.width,c.height);
+      ctx.fillStyle="#00f7ff";
+      ctx.font=fontSize+"px monospace";
+      for(let i=0;i<drops.length;i++){
+        const text=letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+        if(drops[i]*fontSize>c.height && Math.random()>0.975)drops[i]=0;
+        drops[i]++;
+      }
+    }
+    setInterval(draw,33);
+
+    // Particle Effect
+    const p=document.getElementById("particles");
+    const pctx=p.getContext("2d");
+    p.width=window.innerWidth;p.height=window.innerHeight;
+    const particlesArray=[];
+    for(let i=0;i<100;i++){
+      particlesArray.push({x:Math.random()*p.width,y:Math.random()*p.height,radius:Math.random()*2+1,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5});
+    }
+    function drawParticles(){
+      pctx.clearRect(0,0,p.width,p.height);
+      particlesArray.forEach(particle=>{
+        pctx.beginPath();
+        pctx.arc(particle.x,particle.y,particle.radius,0,Math.PI*2,false);
+        pctx.fillStyle="#00f7ff";
+        pctx.fill();
+        particle.x+=particle.dx; particle.y+=particle.dy;
+        if(particle.x<0||particle.x>p.width)particle.dx*=-1;
+        if(particle.y<0||particle.y>p.height)particle.dy*=-1;
+      });
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    // Responsive Canvas
+    window.addEventListener('resize',()=>{
+      c.width=window.innerWidth;c.height=window.innerHeight;
+      p.width=window.innerWidth;p.height=window.innerHeight;
+    });
+  </script>
+</body>
+</html>
